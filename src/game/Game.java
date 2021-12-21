@@ -3,40 +3,44 @@ package game;
 import java.util.Random;
 import java.util.Scanner;
 
-import game.objects.GameObject;
-import game.objects.Paper;
-import game.objects.Rock;
-import game.objects.Scissors;
 
 public class Game {
 	
-	private GameObject [] gameObject= {new Rock(), new Paper(), new Scissors()};
 	private Scanner scanner = new Scanner(System.in);
-	private String [] result = {"lose", "tie", "win"};
-	
+	private Random random = new Random();
+	private GameObject[] objects = GameObject.values();
 	public static int totalResult;
 	
 	public void run() {
 		
-		Random random = new Random();
+		
 		System.out.println("Play!");
 		
 		for (int i=0; i<3; i++) {
-		System.out.println("Choose one of these :");
-		System.out.println("0. Rock");
-		System.out.println("1. Paper");
-		System.out.println("2. Scissors");
-		System.out.print("> ");
-		int input = scanner.nextInt();
-		//1 scanner.close();
-		GameObject object1 = gameObject[input];
-		System.out.println("You chose " + object1.getName());
-		GameObject object2 = gameObject[random.nextInt(gameObject.length)];
-		System.out.println("The computer chose " + object2.getName());
-		totalResult += object1.compareTo(object2);
-		System.out.println(result[object1.compareTo(object2)+1]);
+		GameObject playerObject = userInput();
+		GameObject randomObject = randomObject();
+		System.out.println();
+		System.out.println(playerObject + "--" + randomObject);
+		
+		if (playerObject.beats(randomObject)) {
+			System.out.println("win");
+			System.out.println(playerObject+ "beats" + randomObject);
+			totalResult +=1;
+		}
+		else if (playerObject == randomObject) {
+			System.out.println("tie");
+			
+		}
+		
+		else {
+			System.out.println("loose");
+			totalResult -=1;
+			System.out.println(randomObject+ "beats" + playerObject);
+		}
+
 		}
 		scanner.close();
+		
 		if (totalResult < 0) {
 			System.out.println("You have LOSE!");
 		}
@@ -48,5 +52,26 @@ public class Game {
 		}
 	
 	}
+	
+	public GameObject userInput() {
+		do {
+		System.out.println("Choose one of these:");
+		System.out.println("0. Rock");
+		System.out.println("1. Paper");
+		System.out.println("2. Scissors");
+		System.out.print("> ");
+		int input = scanner.nextInt();
 		
+		if (input < 3 && input >=0) {
+			return objects[input];
+		}
+		
+		}while(true);
+	}
+	
+	public GameObject randomObject() {
+		return objects[random.nextInt(objects.length)];
+	}
+	
+
 }
