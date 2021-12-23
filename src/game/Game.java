@@ -54,19 +54,38 @@ public class Game {
 	}
 	
 	public GameObject userInput() {
+		boolean getNumber = false;
+		int number = -1;
+		
+		do {
 		do {
 		System.out.println("Choose one of these:");
 		System.out.println("0. Rock");
 		System.out.println("1. Paper");
 		System.out.println("2. Scissors");
 		System.out.print("> ");
-		int input = scanner.nextInt();
+		String input = scanner.nextLine();
 		
-		if (input < 3 && input >=0) {
-			return objects[input];
+		try {
+			number = Integer.parseInt(input);
+			getNumber = true;
 		}
+		catch(NumberFormatException e) {
+			System.out.println("Give a valid input!");
+		}
+		}
+		while(!getNumber);
 		
+		if (number < 3 && number >=0) {
+			return objects[number];
+		}
+		else {}
+		System.out.println("Not valid number!");
 		}while(true);
+		
+		
+		
+		
 	}
 	
 	public GameObject randomObject() {
